@@ -1,0 +1,8 @@
+/target/
+/.settings/
+/.classpath
+/.project
+/local.db.lck
+/local.db.log
+/local.db.properties
+/local.db.script
