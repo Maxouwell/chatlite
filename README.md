@@ -1,0 +1,2 @@
+# chatlite
+StandAlone Chat Server
