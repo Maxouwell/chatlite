@@ -4,33 +4,41 @@ var page = 0;
 function connect() {
     var socket = new SockJS('/stomp');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/user/topic/message/error', function (message) {
-        	addMessageError(JSON.parse(message.body));
-        	scrollMessages();
-        });
-        stompClient.subscribe('/user/topic/messages/list', function (message) {
-        	addMessagesTop(JSON.parse(message.body));
-        	
-        	if(page == 1) {
-            	scrollMessages();
-        	}
-        });
-        stompClient.subscribe('/topic/messages/flow', function (message) {
-        	addMessageBottom(JSON.parse(message.body));
-            scrollMessages();
-        });
-        stompClient.subscribe('/topic/users/list', function (message) {
-        	updateUsers(JSON.parse(message.body));
-        });
-        stompClient.subscribe('/user/topic/users/list', function (message) {
-        	updateUsers(JSON.parse(message.body));
-        });
-        
-        requestMessagesList();
-        requestUsersList();
-    });
+    stompClient.connect({}, 
+    		function (frame) {
+		        console.log('Connected: ' + frame);
+		        stompClient.subscribe('/user/topic/message/error', function (message) {
+		        	addMessageError(JSON.parse(message.body));
+		        	scrollMessages();
+		        });
+		        stompClient.subscribe('/user/topic/messages/list', function (message) {
+		        	addMessagesTop(JSON.parse(message.body));
+		        	
+		        	if(page == 1) {
+		            	scrollMessages();
+		        	}
+		        });
+		        stompClient.subscribe('/topic/messages/flow', function (message) {
+		        	addMessageBottom(JSON.parse(message.body));
+		            scrollMessages();
+		        });
+		        stompClient.subscribe('/topic/users/list', function (message) {
+		        	updateUsers(JSON.parse(message.body));
+		        });
+		        stompClient.subscribe('/user/topic/users/list', function (message) {
+		        	updateUsers(JSON.parse(message.body));
+		        });
+		        
+		        requestMessagesList();
+		        requestUsersList();
+		    },
+		    function (error) {
+		        console.log('Error: ' + error);
+		        
+		        //Dans le doute on reload la page, pour avoir la page de login
+		        location.reload();
+		    },
+    );
 }
 
 function requestUsersList() {
