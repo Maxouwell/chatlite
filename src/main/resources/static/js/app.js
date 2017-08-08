@@ -21,9 +21,36 @@ function connect() {
         	addMessageBottom(JSON.parse(message.body));
             scrollMessages();
         });
+        stompClient.subscribe('/topic/users/list', function (message) {
+        	updateUsers(JSON.parse(message.body));
+        });
+        stompClient.subscribe('/user/topic/users/list', function (message) {
+        	updateUsers(JSON.parse(message.body));
+        });
         
         requestMessagesList();
+        requestUsersList();
     });
+}
+
+function requestUsersList() {
+	if(page == -1) {
+		return;
+	}
+	
+	stompClient.send("/api/users/askList", {}, JSON.stringify({}));
+}
+
+function updateUsers(users) {
+	$( "#usersList" ).empty();
+	
+	jQuery.each(users, function(index, user) {
+		if(index != 0) {
+			$("#usersList").append(', ');
+		}
+		
+		$("#usersList").append(user);
+	});
 }
 
 function requestMessagesList() {

@@ -1,4 +1,4 @@
-package chatlite.model;
+package chatlite.bean;
 
 public class PagingInfo {
 
