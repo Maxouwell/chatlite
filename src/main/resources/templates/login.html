@@ -27,9 +27,15 @@
 		<form method="POST" action="#" th:action="@{/login}" class="form-signin">
 			<h2 class="form-heading">Log in</h2>
 
-			<div class="form-group" th:classappend="${error != null}? has-error">
+			<div class="form-group" th:classappend="${param.error != null}? has-error">
 				<div th:if="${param.logout}">
 		            You have been logged out.
+		        </div>
+		        <div th:if="${param.csrfError}">
+		            Session lost, please log again.
+		        </div>
+		        <div th:if="${param.generalError}">
+		            There have been an error, please log again.
 		        </div>
 	       		<input name="username" type="text" class="form-control" placeholder="Username" autofocus="true" />
 				<input name="password" type="password" class="form-control" placeholder="Password" />
