@@ -3,6 +3,7 @@ package chatlite;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.system.ApplicationPidFileWriter;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /*
@@ -11,12 +12,15 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 public class WebApplication extends SpringBootServletInitializer {
-    @Override
+    
+	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(WebApplication.class);
     }
-
+	
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(WebApplication.class, args);
+    	SpringApplication app = new SpringApplication(WebApplication.class);
+    	app.addListeners(new ApplicationPidFileWriter("chatlite.pid"));
+    	app.run(args);
     }
 }
