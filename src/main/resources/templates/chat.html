@@ -31,10 +31,11 @@
 			<form id="logoutForm" method="POST" action="#" th:action="@{/logout}">
 				<input type="hidden" name="" th:name="${_csrf.parameterName}" value="" th:value="${_csrf.token}"/>
 				
-				<div class="col-md-11">
+				<div class="col-md-8">
 					Greetings <span th:text="${#httpServletRequest.remoteUser}">User</span>
 				</div>
-				<div class="col-md-1">
+				<div class="col-md-4">
+					<a hre="https://github.com/Maxouwell/chatlite">https://github.com/Maxouwell/chatlite</a>
 					<button id="logout" class="btn btn-default" type="submit">Logout</button>
 				</div>
 			</form>
