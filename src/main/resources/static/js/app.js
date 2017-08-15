@@ -102,17 +102,17 @@ function createMessage(message, trClass) {
 	return "<tr " 
 		+ trClass
 		+ "><td>[" 
-		+ message.date.dayOfMonth
+		+ formatNumber(message.date.dayOfMonth)
 		+ "/"
-		+ message.date.monthValue
+		+ formatNumber(message.date.monthValue)
 		+ "/"
 		+ message.date.year
 		+ " "
-		+ message.date.hour
+		+ formatNumber(message.date.hour)
 		+ ":"
-		+ message.date.minute
+		+ formatNumber(message.date.minute)
 		+ ":"
-		+ message.date.second
+		+ formatNumber(message.date.second)
 		+ "] " 
 		+ message.username 
 		+ " > " 
@@ -128,6 +128,14 @@ $(function () {
     $( "#loadMoreBtn" ).click(function() { requestMessagesList(); });
     connect();
 });
+
+function formatNumber(number) {
+	if(number < 10) {
+		return '0' + number;
+	} else {
+		return number;
+	}
+}
 
 /* See https://github.com/jmrware/LinkifyURL */
 function linkify(text) {
