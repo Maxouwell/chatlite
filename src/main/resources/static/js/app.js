@@ -133,7 +133,7 @@ $(function () {
 function linkify(text) {
 	
 	// added
-	var img_pattern = /(http:\/\/[\w\-\.]+\.[a-zA-Z]{2,3}(?:\/\S*)?(?:[\w])+\.(?:jpg|png|gif|jpeg))/ig;
+	var img_pattern = /(https?:\/\/[\w\-\.]+\.[a-zA-Z]{2,3}(?:\/\S*)?(?:[\w])+\.(?:jpg|png|gif|jpeg))/ig;
 	var img_replace = '<a href="$1" target="blank"><img src="$1" /></a>';
 	text = text.replace(img_pattern, img_replace);
 	// /added
