@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
-    <title>Chat lite</title>
+    <title>Chat La Rache</title>
 
-	<link href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
-	<link href="../static/css/common.css" th:href="@{css/common.css}" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+	<link href="../static/css/common.css" th:href="@{css/common.css}" rel="stylesheet" type="text/css" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -25,55 +25,56 @@
 		<h2 style="color: #ff0000">Seems your browser doesn't support Javascript!
 		Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!</h2>
 	</noscript>
-	
-	<header class="header">
-		<div class="container">
+
+	<nav id="navbar" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
 			<form id="logoutForm" method="POST" action="#" th:action="@{/logout}">
 				<input type="hidden" name="" th:name="${_csrf.parameterName}" value="" th:value="${_csrf.token}"/>
 				
-				<div class="col-md-8">
-					Greetings <span th:text="${#httpServletRequest.remoteUser}">User</span>
-				</div>
-				<div class="col-md-4">
-					<a href="https://github.com/Maxouwell/chatlite" target="blank">https://github.com/Maxouwell/chatlite</a>
-					<button id="logout" class="btn btn-default" type="submit">Logout</button>
+				<div class="row">
+					<div class="col-xs-7 navbar-brand">
+						Coucou <span class="username" th:text="${#httpServletRequest.remoteUser}">User</span>
+					</div>
+					<div id="logoutBtnGroup" class="col-xs-5">
+						<div class="btn-group pull-right" role="group">
+							<a href="https://github.com/Maxouwell/chatlite" class="btn btn-info" target="blank">GitHub</a>
+							<button id="logout" class="btn btn-danger" type="submit" aria-label="Logout">
+								<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>
-	</header>
-	
-	<div id="main-content" class="container">
-		<div class="row">
-			<div id="messagesScroll" class="col-md-12 fuck_this_scroll">
-				<table id="conversation" class="table table-striped" >
-					<tbody id="messages">
-						<tr id="loadMore" ><td><button id="loadMoreBtn" class="btn btn-default" type="submit">Load More</button></td></tr>
-					</tbody>
-				</table>
-			</div>
+	</nav>
+
+	<div id="main-content" class="container-fluid">
+		<div id="messagesScroll" class="fuck_this_scroll">
+			<button id="loadMoreBtn" class="btn btn-default" type="submit">Load More</button>
+			<ul id="conversation" class="list-group">
+			</ul>
 		</div>
-		
 	</div>
 	
-	<div class="container"> Connected users : <span id="usersList"></span></div>
-	
-	<footer class="footer">
-		<div class="container">
+	<footer id="footer" class="footer">
+		<div class="container-fluid">
+			<div class="users"> Connected users : <span class="username" id="usersList"></span></div>
 			<form id="sendForm">
-				<div class="col-md-11">
-					<input type="text" id="message" class="form-control" placeholder="Your message here..."/>
+				<div class="input-group">
+					<input type="text" id="message" class="form-control" placeholder="Your message here..." autocomplete="off" />
+
+					<div class="input-group-btn">
+						<button id="send" class="btn btn-primary" type="submit">Send <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+					</div>
 				</div>
-				<div class="col-md-1">
-					<button id="send" class="btn btn-default" type="submit">Send</button>
-				</div>
-				
 			</form>
 		</div>
 	</footer>
 
 <!-- /container -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 <script src="../static/js/app.js" th:src="@{/js/app.js}"></script>
 <script src="#" th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
 <script src="#" th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>

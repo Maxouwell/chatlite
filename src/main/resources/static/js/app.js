@@ -6,7 +6,6 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, 
     		function (frame) {
-		        console.log('Connected: ' + frame);
 		        stompClient.subscribe('/user/topic/message/error', function (message) {
 		        	addMessageError(JSON.parse(message.body));
 		        	scrollMessages();
@@ -33,8 +32,6 @@ function connect() {
 		        requestUsersList();
 		    },
 		    function (error) {
-		        console.log('Error: ' + error);
-		        
 		        //Dans le doute on reload la page, pour avoir la page de login
 		        location.reload();
 		    },
@@ -81,27 +78,27 @@ function scrollMessages() {
 
 function addMessagesTop(messagesPages) {
 	jQuery.each(messagesPages.content, function() {
-	  $("#loadMore").after(createMessage(this, ''))
+	  $("#conversation").prepend(createMessage(this, ''))
 	});
 	
 	if(messagesPages.last) {
 		page = -1;
-		$( "#loadMore" ).remove();
+		$( "#loadMoreBtn" ).remove();
 	}
 }
 
 function addMessageBottom(message) {
-    $("#messages").append(createMessage(message, ''));
+    $("#conversation").append(createMessage(message, ''));
 }
 
 function addMessageError(message) {
-    $("#messages").append(createMessage(message, 'class="error"'));
+    $("#conversation").append(createMessage(message, 'class="error"'));
 }
 
 function createMessage(message, trClass) {
-	return "<tr " 
+	return "<li class='list-group-item " 
 		+ trClass
-		+ "><td>[" 
+		+ "'><span class='date'>[" 
 		+ formatNumber(message.date.dayOfMonth)
 		+ "/"
 		+ formatNumber(message.date.monthValue)
@@ -113,14 +110,28 @@ function createMessage(message, trClass) {
 		+ formatNumber(message.date.minute)
 		+ ":"
 		+ formatNumber(message.date.second)
-		+ "] " 
+		+ "]</span> <span class='username strong'>" 
 		+ message.username 
-		+ " > " 
+		+ "</span> > " 
 		+ linkify(message.content)
-		+ "</td></tr>";
+		+ "</li>";
+}
+
+function resize() {
+	console.log("resize " + $( "#messagesScroll" ).height() );
+	$( "#messagesScroll" ).height( $( window ).height() 
+			- $( "#navbar" ).height() 
+			- $( "#footer" ).height() 
+			- 20);
+	console.log("resize " + $( "#messagesScroll" ).height());
 }
 
 $(function () {
+	$( window ).resize(function() {
+		resize();
+	});
+	resize();
+	
     $("#sendForm").on('submit', function (e) {
         e.preventDefault();
     });

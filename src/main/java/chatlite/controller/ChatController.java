@@ -54,10 +54,16 @@ public class ChatController {
     @SendTo("/topic/messages/flow")
     public Message message(SimpMessageHeaderAccessor headerAccessor, Message message) throws Exception {
     	
-    	message.setUsername(StringEscapeUtils.escapeHtml4(headerAccessor.getUser().getName()));
+    	String username = StringEscapeUtils.escapeHtml4(headerAccessor.getUser().getName());
+    	
+    	message.setUsername(username);
     	message.setContent(StringEscapeUtils.escapeHtml4(message.getContent()));
     	
     	messageService.save(message);
+    	
+    	if(!userList.contains(username)) {
+    		userList.add(username);
+    	}
     	
     	return message;
     }
@@ -86,7 +92,9 @@ public class ChatController {
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(event.getMessage());
         String user = sha.getUser().getName(); 
         logger.info("[Connected] " + user);
-        userList.add(user);
+        
+        String username = StringEscapeUtils.escapeHtml4(user);
+        userList.add(username);
         
         messagingService.convertAndSend("/topic/users/list", userList.stream().collect(Collectors.toList()));
     }
@@ -96,7 +104,9 @@ public class ChatController {
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(event.getMessage());
         String user = sha.getUser().getName(); 
         logger.info("[Disconnected] " + user);
-        userList.remove(user);
+        
+        String username = StringEscapeUtils.escapeHtml4(user);
+        userList.remove(username);
         
         messagingService.convertAndSend("/topic/users/list", userList.stream().collect(Collectors.toList()));
     }
